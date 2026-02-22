@@ -36,10 +36,17 @@ export default function App() {
     });
   }
 
+  function deleteLastTodo() {
+    if (todos.length > 0) {
+      deleteTodo(todos[todos.length - 1].id);
+    }
+  }
+
   return (
     <main>
       <h1>My todos</h1>
       <button onClick={createTodo}>+ new</button>
+      <button onClick={deleteLastTodo}>Delete last</button>
       <ul>
         {todos.map((todo) => (
           <li onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.content}</li>
