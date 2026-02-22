@@ -34,23 +34,29 @@ export default function HomePage() {
       <section className={styles.services}>
         <h2 className={styles.sectionTitle}>What We Offer</h2>
         <div className={styles.serviceGrid}>
-          <div className={styles.serviceCard}>
-            <div className={styles.serviceImage} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1487530811015-780f2f0859b2?w=600&q=80')" }} />
-            <h3>Bouquets</h3>
-            <p>Fresh, seasonal bouquets for any occasion — birthdays, anniversaries, or just because.</p>
-            <Link href="/shop" className={styles.cardLink}>Shop Bouquets →</Link>
+          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-k2rHVMAC7E4?w=600&q=80')" }}>
+            <div className={styles.serviceOverlay} />
+            <div className={styles.serviceContent}>
+              <h3>Bouquets</h3>
+              <p>Fresh, seasonal bouquets for any occasion — birthdays, anniversaries, or just because.</p>
+              <Link href="/shop" className={styles.cardLink}>Shop Bouquets →</Link>
+            </div>
           </div>
-          <div className={styles.serviceCard}>
-            <div className={styles.serviceImage} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80')" }} />
-            <h3>Weddings</h3>
-            <p>From bridal bouquets to ceremony arches, we bring your wedding vision to life.</p>
-            <Link href="/contact" className={styles.cardLink}>Get a Quote →</Link>
+          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80')" }}>
+            <div className={styles.serviceOverlay} />
+            <div className={styles.serviceContent}>
+              <h3>Weddings</h3>
+              <p>From bridal bouquets to ceremony arches, we bring your wedding vision to life.</p>
+              <Link href="/contact" className={styles.cardLink}>Get a Quote →</Link>
+            </div>
           </div>
-          <div className={styles.serviceCard}>
-            <div className={styles.serviceImage} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1561181286-d3f2ad916f5a?w=600&q=80')" }} />
-            <h3>Events</h3>
-            <p>Corporate events, galas, and celebrations — stunning floral design at any scale.</p>
-            <Link href="/contact" className={styles.cardLink}>Plan Your Event →</Link>
+          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-swTMHPN2ij0?w=600&q=80')" }}>
+            <div className={styles.serviceOverlay} />
+            <div className={styles.serviceContent}>
+              <h3>Events</h3>
+              <p>Corporate events, galas, and celebrations — stunning floral design at any scale.</p>
+              <Link href="/contact" className={styles.cardLink}>Plan Your Event →</Link>
+            </div>
           </div>
         </div>
       </section>
