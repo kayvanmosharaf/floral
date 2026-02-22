@@ -28,7 +28,7 @@ export default function Navbar() {
       </button>
 
       <Link href="/" className={styles.logo}>
-        🌸 Maryam's Floral
+        🌸 Tuberose Floral
       </Link>
 
       <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
