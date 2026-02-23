@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
+import { useCart } from "../context/CartContext";
 
 const links = [
   { href: "/", label: "Home" },
@@ -16,6 +17,7 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { count } = useCart();
 
   return (
     <nav className={styles.navbar}>
@@ -47,6 +49,7 @@ export default function Navbar() {
 
       <Link href="/cart" className={styles.cart}>
         🛒
+        {count > 0 && <span className={styles.cartBadge}>{count}</span>}
       </Link>
     </nav>
   );

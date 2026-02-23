@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./shop.module.css";
+import { useCart } from "../context/CartContext";
 
 type Product = {
   id: number;
@@ -16,16 +17,12 @@ const categories = ["All", "Bouquets", "Weddings", "Events", "Plants"];
 
 export default function ShopClient({ products }: { products: Product[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [cart, setCart] = useState<number[]>([]);
+  const { addToCart, items } = useCart();
 
   const filtered =
     activeCategory === "All"
       ? products
       : products.filter((p) => p.category === activeCategory);
-
-  function addToCart(id: number) {
-    setCart((prev) => [...prev, id]);
-  }
 
   return (
     <div className={styles.page}>
@@ -51,7 +48,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
       {/* Product Grid */}
       <div className={styles.grid}>
         {filtered.map((product) => {
-          const inCart = cart.includes(product.id);
+          const inCart = items.some((i) => i.product.id === product.id);
           return (
             <div key={product.id} className={styles.card}>
               <div
@@ -71,7 +68,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
                   <span className={styles.price}>${product.price}</span>
                   <button
                     className={`${styles.addBtn} ${inCart ? styles.addedBtn : ""}`}
-                    onClick={() => addToCart(product.id)}
+                    onClick={() => addToCart(product)}
                     disabled={inCart}
                   >
                     {inCart ? "✓ Added" : "+ Add to Cart"}
