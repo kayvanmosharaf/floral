@@ -20,12 +20,15 @@ export default function GalleryPage() {
   const [images, setImages] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    const key = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+    if (!key) return;
     flowers.forEach(async (flower) => {
-      const res = await fetch(`/api/unsplash?q=${encodeURIComponent(flower.name + " flower")}`);
+      const res = await fetch(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(flower.name + " flower")}&per_page=1&orientation=squarish&client_id=${key}`
+      );
       const data = await res.json();
-      if (data.imageUrl) {
-        setImages((prev) => ({ ...prev, [flower.name]: data.imageUrl }));
-      }
+      const imageUrl = data.results?.[0]?.urls?.regular;
+      if (imageUrl) setImages((prev) => ({ ...prev, [flower.name]: imageUrl }));
     });
   }, []);
 
