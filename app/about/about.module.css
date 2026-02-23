@@ -1,0 +1,321 @@
+/* Mobile-first about page styles */
+
+.page {
+  width: 100%;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  height: 60vh;
+  min-height: 360px;
+  background-size: cover;
+  background-position: center;
+  background-color: #c9a0a8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+  max-width: 680px;
+}
+
+.heroEyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f5d6de;
+  margin: 0 0 0.75rem;
+}
+
+.heroTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.heroSub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Story ── */
+.story {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.storyImage {
+  width: 100%;
+  height: 280px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-color: #f0e6e6;
+  flex-shrink: 0;
+}
+
+.storyText {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.storyText p {
+  font-size: 0.97rem;
+  color: #555;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #b85c74;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0;
+}
+
+.ctaLink {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #b85c74;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.ctaLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Stats ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background: #b85c74;
+  padding: 2.5rem 1.5rem;
+  gap: 2rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.statLabel {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.05em;
+}
+
+/* ── Values ── */
+.values {
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  background: #fdf8f8;
+}
+
+.values .eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+.values .sectionTitle {
+  margin-bottom: 2rem;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.valueCard {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.valueIcon {
+  font-size: 1.8rem;
+}
+
+.valueTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0.75rem 0 0.4rem;
+}
+
+.valueDesc {
+  font-size: 0.9rem;
+  color: #777;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Team ── */
+.team {
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+}
+
+.team .eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+.team .sectionTitle {
+  margin-bottom: 2rem;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.teamCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  overflow: hidden;
+  text-align: left;
+}
+
+.teamPhoto {
+  width: 100%;
+  height: 240px;
+  background-size: cover;
+  background-position: center top;
+}
+
+.teamName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 1rem 1.25rem 0.2rem;
+}
+
+.teamRole {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b85c74;
+  margin: 0 1.25rem 0.6rem;
+}
+
+.teamBio {
+  font-size: 0.88rem;
+  color: #777;
+  line-height: 1.6;
+  margin: 0 1.25rem 1.25rem;
+}
+
+/* ── CTA ── */
+.cta {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #2d2d2d;
+}
+
+.cta h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem;
+}
+
+.cta p {
+  color: #aaa;
+  margin: 0 0 1.75rem;
+}
+
+.ctaBtn {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  background: #b85c74;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.ctaBtn:hover {
+  background: #a04e65;
+  text-decoration: none;
+}
+
+/* ── Desktop ── */
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 2.8rem;
+  }
+
+  .story {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .storyImage {
+    width: 420px;
+    height: 360px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 3rem 4rem;
+  }
+
+  .valuesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .teamGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
