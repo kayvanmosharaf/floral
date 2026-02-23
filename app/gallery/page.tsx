@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import styles from "./gallery.module.css";
 
 const flowers = [
@@ -20,7 +22,7 @@ async function fetchFlowerImage(query: string): Promise<string | null> {
   try {
     const res = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query + " flower")}&per_page=1&orientation=squarish&client_id=${accessKey}`,
-      { next: { revalidate: 86400 } } // cache for 24 hours
+      { cache: "no-store" }
     );
     const data = await res.json();
     return data.results?.[0]?.urls?.regular ?? null;
