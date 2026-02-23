@@ -1,0 +1,264 @@
+/* Mobile-first contact page styles */
+
+.page {
+  width: 100%;
+  padding-bottom: 4rem;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 0.75rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #888;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Layout — stacked on mobile, side by side on desktop */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Form */
+.formSection {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2rem 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.field input,
+.field select,
+.field textarea {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #e0d0d0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #2d2d2d;
+  background: #fdfafa;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #b85c74;
+  background: #fff;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2rem;
+}
+
+.submitBtn {
+  padding: 0.85rem;
+  background: #b85c74;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.25rem;
+}
+
+.submitBtn:hover {
+  background: #a04e65;
+}
+
+/* Success state */
+.success {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.successIcon {
+  font-size: 3rem;
+  margin: 0 0 1rem;
+}
+
+.success h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 0.5rem;
+}
+
+.success p {
+  color: #777;
+  margin: 0 0 1.5rem;
+  line-height: 1.6;
+}
+
+.resetBtn {
+  background: none;
+  border: 1.5px solid #b85c74;
+  color: #b85c74;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resetBtn:hover {
+  background: #b85c74;
+  color: #fff;
+}
+
+/* Info Panel */
+.infoPanel {
+  width: 100%;
+}
+
+.infoCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2rem 1.5rem;
+}
+
+.infoTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0e6e6;
+}
+
+.infoItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.infoIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.infoLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #b85c74;
+  margin: 0 0 0.2rem;
+}
+
+.infoValue {
+  font-size: 0.92rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.social {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f0e6e6;
+}
+
+.socialLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.socialLinks a {
+  font-size: 0.9rem;
+  color: #555;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.socialLinks a:hover {
+  color: #b85c74;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0 2rem;
+  }
+
+  .row {
+    flex-direction: row;
+  }
+
+  .row .field {
+    flex: 1;
+  }
+
+  .infoPanel {
+    width: 320px;
+    flex-shrink: 0;
+  }
+
+  .infoCard {
+    position: sticky;
+    top: 80px;
+  }
+}
