@@ -20,11 +20,16 @@ export default function ShopClient({ products }: { products: Product[] }) {
   const { addToCart, items } = useCart();
 
   useEffect(() => {
+    const key = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+    if (!key) return;
     products.forEach(async (product) => {
-      const res = await fetch(`/api/unsplash?q=${encodeURIComponent(product.query)}`);
+      const res = await fetch(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(product.query)}&per_page=1&orientation=squarish&client_id=${key}`
+      );
       const data = await res.json();
-      if (data.imageUrl) {
-        setImages((prev) => ({ ...prev, [product.id]: data.imageUrl }));
+      const imageUrl = data.results?.[0]?.urls?.regular;
+      if (imageUrl) {
+        setImages((prev) => ({ ...prev, [product.id]: imageUrl }));
       }
     });
   }, [products]);

@@ -36,11 +36,15 @@ export default function AboutPage() {
   const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
+    const key = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+    if (!key) return;
     Promise.all(
       imageQueries.map(async (query) => {
-        const res = await fetch(`/api/unsplash?q=${encodeURIComponent(query)}`);
+        const res = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=squarish&client_id=${key}`
+        );
         const data = await res.json();
-        return data.imageUrl ?? null;
+        return data.results?.[0]?.urls?.regular ?? null;
       })
     ).then(setImages);
   }, []);
