@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./shop.module.css";
 import { useCart } from "../context/CartContext";
 
@@ -10,14 +10,24 @@ type Product = {
   category: string;
   price: number;
   query: string;
-  imageUrl: string | null;
 };
 
 const categories = ["All", "Bouquets", "Weddings", "Events", "Plants"];
 
 export default function ShopClient({ products }: { products: Product[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [images, setImages] = useState<Record<number, string>>({});
   const { addToCart, items } = useCart();
+
+  useEffect(() => {
+    products.forEach(async (product) => {
+      const res = await fetch(`/api/unsplash?q=${encodeURIComponent(product.query)}`);
+      const data = await res.json();
+      if (data.imageUrl) {
+        setImages((prev) => ({ ...prev, [product.id]: data.imageUrl }));
+      }
+    });
+  }, [products]);
 
   const filtered =
     activeCategory === "All"
@@ -26,13 +36,11 @@ export default function ShopClient({ products }: { products: Product[] }) {
 
   return (
     <div className={styles.page}>
-      {/* Header */}
       <div className={styles.header}>
         <h1 className={styles.title}>Shop</h1>
         <p className={styles.subtitle}>Fresh arrangements for every occasion</p>
       </div>
 
-      {/* Filters */}
       <div className={styles.filters}>
         {categories.map((cat) => (
           <button
@@ -45,19 +53,17 @@ export default function ShopClient({ products }: { products: Product[] }) {
         ))}
       </div>
 
-      {/* Product Grid */}
       <div className={styles.grid}>
         {filtered.map((product) => {
           const inCart = items.some((i) => i.product.id === product.id);
+          const imageUrl = images[product.id];
           return (
             <div key={product.id} className={styles.card}>
               <div
                 className={styles.image}
                 style={{
-                  backgroundImage: product.imageUrl
-                    ? `url('${product.imageUrl}')`
-                    : undefined,
-                  backgroundColor: product.imageUrl ? undefined : "#f0e6e6",
+                  backgroundImage: imageUrl ? `url('${imageUrl}')` : undefined,
+                  backgroundColor: imageUrl ? undefined : "#f0e6e6",
                 }}
               >
                 <span className={styles.categoryTag}>{product.category}</span>
@@ -68,7 +74,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
                   <span className={styles.price}>${product.price}</span>
                   <button
                     className={`${styles.addBtn} ${inCart ? styles.addedBtn : ""}`}
-                    onClick={() => addToCart(product)}
+                    onClick={() => addToCart({ ...product, imageUrl: imageUrl ?? null })}
                     disabled={inCart}
                   >
                     {inCart ? "✓ Added" : "+ Add to Cart"}

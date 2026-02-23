@@ -1,5 +1,6 @@
-export const dynamic = "force-dynamic";
+"use client";
 
+import { useEffect, useState } from "react";
 import styles from "./gallery.module.css";
 
 const flowers = [
@@ -15,29 +16,18 @@ const flowers = [
   { name: "Carnations", rank: 10, description: "Timeless and affordable — a florist staple loved across generations." },
 ];
 
-async function fetchFlowerImage(query: string): Promise<string | null> {
-  const accessKey = process.env.UNSPLASH_ACCESS_KEY;
-  if (!accessKey) return null;
+export default function GalleryPage() {
+  const [images, setImages] = useState<Record<string, string>>({});
 
-  try {
-    const res = await fetch(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query + " flower")}&per_page=1&orientation=squarish&client_id=${accessKey}`,
-      { cache: "no-store" }
-    );
-    const data = await res.json();
-    return data.results?.[0]?.urls?.regular ?? null;
-  } catch {
-    return null;
-  }
-}
-
-export default async function GalleryPage() {
-  const flowerData = await Promise.all(
-    flowers.map(async (flower) => ({
-      ...flower,
-      imageUrl: await fetchFlowerImage(flower.name),
-    }))
-  );
+  useEffect(() => {
+    flowers.forEach(async (flower) => {
+      const res = await fetch(`/api/unsplash?q=${encodeURIComponent(flower.name + " flower")}`);
+      const data = await res.json();
+      if (data.imageUrl) {
+        setImages((prev) => ({ ...prev, [flower.name]: data.imageUrl }));
+      }
+    });
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -45,15 +35,14 @@ export default async function GalleryPage() {
         <h1 className={styles.title}>Flower Gallery</h1>
         <p className={styles.subtitle}>Top 10 best-selling flowers in the United States</p>
       </div>
-
       <div className={styles.grid}>
-        {flowerData.map((flower) => (
+        {flowers.map((flower) => (
           <div key={flower.rank} className={styles.tile}>
             <div
               className={styles.image}
               style={{
-                backgroundImage: flower.imageUrl ? `url('${flower.imageUrl}')` : undefined,
-                backgroundColor: flower.imageUrl ? undefined : "#e8d5d5",
+                backgroundImage: images[flower.name] ? `url('${images[flower.name]}')` : undefined,
+                backgroundColor: images[flower.name] ? undefined : "#f0e6e6",
               }}
             />
             <div className={styles.overlay}>
