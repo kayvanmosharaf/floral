@@ -1,6 +1,5 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
 import styles from "./gallery.module.css";
 
 const flowers = [
@@ -16,21 +15,29 @@ const flowers = [
   { name: "Carnations", rank: 10, description: "Timeless and affordable — a florist staple loved across generations." },
 ];
 
-export default function GalleryPage() {
-  const [images, setImages] = useState<Record<string, string>>({});
+async function fetchFlowerImage(query: string): Promise<string | null> {
+  const accessKey = process.env.UNSPLASH_ACCESS_KEY;
+  if (!accessKey) return null;
 
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
-    if (!key) return;
-    flowers.forEach(async (flower) => {
-      const res = await fetch(
-        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(flower.name + " flower")}&per_page=1&orientation=squarish&client_id=${key}`
-      );
-      const data = await res.json();
-      const imageUrl = data.results?.[0]?.urls?.regular;
-      if (imageUrl) setImages((prev) => ({ ...prev, [flower.name]: imageUrl }));
-    });
-  }, []);
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query + " flower")}&per_page=1&orientation=squarish&client_id=${accessKey}`,
+      { cache: "no-store" }
+    );
+    const data = await res.json();
+    return data.results?.[0]?.urls?.regular ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function GalleryPage() {
+  const flowerData = await Promise.all(
+    flowers.map(async (flower) => ({
+      ...flower,
+      imageUrl: await fetchFlowerImage(flower.name),
+    }))
+  );
 
   return (
     <div className={styles.page}>
@@ -38,14 +45,15 @@ export default function GalleryPage() {
         <h1 className={styles.title}>Flower Gallery</h1>
         <p className={styles.subtitle}>Top 10 best-selling flowers in the United States</p>
       </div>
+
       <div className={styles.grid}>
-        {flowers.map((flower) => (
+        {flowerData.map((flower) => (
           <div key={flower.rank} className={styles.tile}>
             <div
               className={styles.image}
               style={{
-                backgroundImage: images[flower.name] ? `url('${images[flower.name]}')` : undefined,
-                backgroundColor: images[flower.name] ? undefined : "#f0e6e6",
+                backgroundImage: flower.imageUrl ? `url('${flower.imageUrl}')` : undefined,
+                backgroundColor: flower.imageUrl ? undefined : "#e8d5d5",
               }}
             />
             <div className={styles.overlay}>

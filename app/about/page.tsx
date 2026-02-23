@@ -1,20 +1,50 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
 import styles from "./about.module.css";
 import Link from "next/link";
 
 const team = [
-  { name: "Maryam Mosharaf", role: "Founder & Lead Designer", bio: "With over 15 years of experience, she brings passion and artistry to every arrangement." },
-  { name: "Leila Ahmadi", role: "Wedding Specialist", bio: "Leila has designed floral arrangements for over 300 weddings across California." },
-  { name: "James Park", role: "Event Designer", bio: "James transforms corporate and gala spaces into breathtaking floral experiences." },
+  {
+    name: "Tuberose Floral",
+    role: "Founder & Lead Designer",
+    bio: "With over 15 years of experience, she brings passion and artistry to every arrangement.",
+    photo: "ZHvM3XIOHoE",
+  },
+  {
+    name: "Leila Ahmadi",
+    role: "Wedding Specialist",
+    bio: "Leila has designed floral arrangements for over 300 weddings across California.",
+    photo: "rDEOVtE7vOs",
+  },
+  {
+    name: "James Park",
+    role: "Event Designer",
+    bio: "James transforms corporate and gala spaces into breathtaking floral experiences.",
+    photo: "d2MSDujJl2g",
+  },
 ];
 
 const values = [
-  { icon: "🌱", title: "Sustainably Sourced", description: "We work with local and eco-certified growers to minimize our environmental footprint." },
-  { icon: "✂️", title: "Handcrafted with Care", description: "Every stem is hand-selected and arranged by our skilled designers — no two bouquets are alike." },
-  { icon: "💛", title: "Personal Touch", description: "We take time to understand your vision and bring it to life with warmth and creativity." },
-  { icon: "🚚", title: "Same-Day Delivery", description: "Fresh flowers delivered to your door within hours, seven days a week." },
+  {
+    icon: "🌱",
+    title: "Sustainably Sourced",
+    description: "We work with local and eco-certified growers to minimize our environmental footprint.",
+  },
+  {
+    icon: "✂️",
+    title: "Handcrafted with Care",
+    description: "Every stem is hand-selected and arranged by our skilled designers — no two bouquets are alike.",
+  },
+  {
+    icon: "💛",
+    title: "Personal Touch",
+    description: "We take time to understand your vision and bring it to life with warmth and creativity.",
+  },
+  {
+    icon: "🚚",
+    title: "Same-Day Delivery",
+    description: "Fresh flowers delivered to your door within hours, seven days a week.",
+  },
 ];
 
 const stats = [
@@ -24,32 +54,27 @@ const stats = [
   { value: "50+", label: "Event Venues" },
 ];
 
-const imageQueries = [
-  "beautiful flower shop interior",
-  "florist woman arranging flowers",
-  "florist portrait professional woman",
-  "wedding specialist portrait professional",
-  "event designer portrait professional",
-];
+async function fetchImage(query: string): Promise<string | null> {
+  const accessKey = process.env.UNSPLASH_ACCESS_KEY;
+  if (!accessKey) return null;
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=squarish&client_id=${accessKey}`,
+      { cache: "no-store" }
+    );
+    const data = await res.json();
+    return data.results?.[0]?.urls?.regular ?? null;
+  } catch {
+    return null;
+  }
+}
 
-export default function AboutPage() {
-  const [images, setImages] = useState<string[]>([]);
-
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
-    if (!key) return;
-    Promise.all(
-      imageQueries.map(async (query) => {
-        const res = await fetch(
-          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=squarish&client_id=${key}`
-        );
-        const data = await res.json();
-        return data.results?.[0]?.urls?.regular ?? null;
-      })
-    ).then(setImages);
-  }, []);
-
-  const [heroBg, storyImg, ...teamImages] = images;
+export default async function AboutPage() {
+  const [heroBg, storyImg, ...teamImages] = await Promise.all([
+    fetchImage("beautiful flower shop interior"),
+    fetchImage("florist woman arranging flowers"),
+    ...team.map((m) => fetchImage(`${m.role} portrait professional`)),
+  ]);
 
   return (
     <div className={styles.page}>
