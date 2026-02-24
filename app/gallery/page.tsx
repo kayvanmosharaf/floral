@@ -16,7 +16,7 @@ const flowers = [
 ];
 
 async function fetchFlowerImage(query: string): Promise<string | null> {
-  const accessKey = process.env.UNSPLASH_ACCESS_KEY;
+  const accessKey = process.env.UNSPLASH_ACCESS_KEY ?? process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
   if (!accessKey) return null;
 
   try {
