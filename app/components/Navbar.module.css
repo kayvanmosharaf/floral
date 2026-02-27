@@ -22,24 +22,6 @@
   color: #b85c74;
   text-decoration: none;
   letter-spacing: 0.02em;
-  order: 2;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Hamburger — visible on mobile, top left */
-.hamburger {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  font-size: 1.4rem;
-  color: #4a4a4a;
-  cursor: pointer;
-  padding: 0.4rem;
-  order: 1;
 }
 
 /* Mobile dropdown menu */
@@ -86,12 +68,40 @@
   background-color: #fdf5f7;
 }
 
+/* Sign out button — matches link style */
+.signOutBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #b85c74;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.signOutBtn:hover {
+  border-left-color: #b85c74;
+  background-color: #fdf5f7;
+}
+
+/* Right-side group: cart + hamburger */
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .cart {
   font-size: 1.4rem;
   text-decoration: none;
-  order: 3;
   transition: transform 0.2s;
   position: relative;
+  padding: 0.4rem;
 }
 
 .cart:hover {
@@ -100,8 +110,8 @@
 
 .cartBadge {
   position: absolute;
-  top: -6px;
-  right: -8px;
+  top: -2px;
+  right: -2px;
   background: #b85c74;
   color: #fff;
   font-size: 0.65rem;
@@ -114,6 +124,19 @@
   justify-content: center;
 }
 
+/* Hamburger — visible on mobile, top right */
+.hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #4a4a4a;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+
 /* Desktop styles — 768px and up */
 @media (min-width: 768px) {
   .navbar {
@@ -123,8 +146,6 @@
 
   .logo {
     font-size: 1.4rem;
-    position: static;
-    transform: none;
     order: 1;
   }
 
@@ -165,7 +186,22 @@
     border-bottom-color: #b85c74;
   }
 
-  .cart {
+  .signOutBtn {
+    padding: 0;
+    padding-bottom: 2px;
+    width: auto;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .signOutBtn:hover {
+    background-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: #b85c74;
+  }
+
+  .navRight {
     order: 3;
+    gap: 0.5rem;
   }
 }

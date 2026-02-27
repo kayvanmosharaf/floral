@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import styles from "./Navbar.module.css";
 import { useCart } from "../context/CartContext";
 
@@ -18,17 +19,10 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { count } = useCart();
+  const { authStatus, signOut } = useAuthenticator();
 
   return (
     <nav className={styles.navbar}>
-      <button
-        className={styles.hamburger}
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Toggle menu"
-      >
-        {menuOpen ? "✕" : "☰"}
-      </button>
-
       <Link href="/" className={styles.logo}>
         🌸 Tuberose Floral
       </Link>
@@ -45,12 +39,31 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+        {authStatus === "authenticated" && (
+          <li>
+            <button
+              className={styles.signOutBtn}
+              onClick={() => { signOut(); setMenuOpen(false); }}
+            >
+              Sign out
+            </button>
+          </li>
+        )}
       </ul>
 
-      <Link href="/cart" className={styles.cart}>
-        🛒
-        {count > 0 && <span className={styles.cartBadge}>{count}</span>}
-      </Link>
+      <div className={styles.navRight}>
+        <Link href="/cart" className={styles.cart}>
+          🛒
+          {count > 0 && <span className={styles.cartBadge}>{count}</span>}
+        </Link>
+        <button
+          className={styles.hamburger}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
+      </div>
     </nav>
   );
 }
