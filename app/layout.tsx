@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./app.css";
 
 import { Authenticator } from "@aws-amplify/ui-react";
+// Authenticator.Provider gives auth context to the whole app without blocking unauthenticated access
 import "@aws-amplify/ui-react/styles.css";
 import Navbar from "./components/Navbar";
 import { Amplify } from "aws-amplify";
@@ -23,12 +24,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <CartProvider>
-          <Authenticator>
+          <Authenticator.Provider>
             <Navbar />
             <main style={{ paddingTop: "56px" }}>
               {children}
             </main>
-          </Authenticator>
+          </Authenticator.Provider>
         </CartProvider>
       </body>
     </html>

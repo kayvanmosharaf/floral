@@ -1,11 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useCart } from "../context/CartContext";
+import AuthModal from "../components/AuthModal";
 import styles from "./cart.module.css";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, subtotal } = useCart();
+  const { authStatus } = useAuthenticator();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  function handleCheckout() {
+    if (authStatus === "authenticated") {
+      // TODO: proceed to checkout
+    } else {
+      setShowAuthModal(true);
+    }
+  }
 
   const delivery = subtotal > 0 ? 15 : 0;
   const tax = parseFloat((subtotal * 0.08).toFixed(2));
@@ -78,10 +91,12 @@ export default function CartPage() {
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
           </div>
-          <button className={styles.checkoutBtn}>Proceed to Checkout</button>
+          <button className={styles.checkoutBtn} onClick={handleCheckout}>Proceed to Checkout</button>
           <Link href="/shop" className={styles.continueShopping}>← Continue Shopping</Link>
         </div>
       </div>
+
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </div>
   );
 }

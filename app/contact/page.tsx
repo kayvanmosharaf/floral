@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import AuthModal from "../components/AuthModal";
 import styles from "./contact.module.css";
 
 export default function ContactPage() {
@@ -13,6 +15,8 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { authStatus } = useAuthenticator();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,7 +24,11 @@ export default function ContactPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
+    if (authStatus === "authenticated") {
+      setSubmitted(true);
+    } else {
+      setShowAuthModal(true);
+    }
   }
 
   return (
@@ -187,6 +195,8 @@ export default function ContactPage() {
         </div>
 
       </div>
+
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </div>
   );
 }
