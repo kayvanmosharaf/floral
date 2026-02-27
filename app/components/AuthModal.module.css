@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,31 +11,81 @@
 .modal {
   position: relative;
   background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 480px;
+  border-radius: 16px;
+  padding: 0;
+  max-width: 460px;
   width: 90%;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 24px 64px rgba(184, 92, 116, 0.18), 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Strip Amplify's own card border/shadow so our modal container is the card */
+.modal :global([data-amplify-router]) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* Soften Amplify's input fields to match the app */
+.modal :global(.amplify-input),
+.modal :global(.amplify-select) {
+  border-color: #f0e6e6 !important;
+  border-radius: 8px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.modal :global(.amplify-input:focus),
+.modal :global(.amplify-select:focus) {
+  border-color: #b85c74 !important;
+  box-shadow: 0 0 0 3px #f0b8c8 !important;
+}
+
+/* Tab bar (Sign In / Create Account) */
+.modal :global(.amplify-tabs-item[data-state="active"]) {
+  border-bottom-color: #b85c74 !important;
+  color: #b85c74 !important;
 }
 
 .closeBtn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
+  top: 0.875rem;
+  right: 0.875rem;
+  z-index: 10;
+  background: #fdf5f7;
+  border: 1px solid #f0e6e6;
+  font-size: 1rem;
   cursor: pointer;
-  color: #666;
+  color: #b85c74;
   line-height: 1;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
   transition: background 0.15s;
 }
 
 .closeBtn:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: #f0e6e6;
+}
+
+/* Branded header */
+.brandHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 0.75rem;
+  gap: 0.3rem;
+}
+
+.brandIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.brandName {
+  font-weight: 700;
+  color: #b85c74;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  font-family: 'Inter', system-ui, sans-serif;
 }
