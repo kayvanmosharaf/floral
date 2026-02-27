@@ -12,6 +12,20 @@ const schema = a.schema({
       content: a.string(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+  ContactMessage: a
+    .model({
+      name: a.string().required(),
+      email: a.string().required(),
+      phone: a.string(),
+      eventDate: a.string(),
+      subject: a.string().required(),
+      message: a.string().required(),
+    })
+    .authorization((allow) => [
+      allow.owner(),
+      allow.groups(["admin"]),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "@/amplify/data/resource";
 import AuthModal from "../components/AuthModal";
 import styles from "./contact.module.css";
+
+const client = generateClient<Schema>();
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -15,6 +19,8 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { authStatus } = useAuthenticator();
 
@@ -22,12 +28,40 @@ export default function ContactPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (authStatus === "authenticated") {
-      setSubmitted(true);
-    } else {
+    setError("");
+
+    if (authStatus !== "authenticated") {
       setShowAuthModal(true);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const { errors } = await client.models.ContactMessage.create(
+        {
+          name: form.name,
+          email: form.email,
+          phone: form.phone || undefined,
+          eventDate: form.eventDate || undefined,
+          subject: form.subject,
+          message: form.message,
+        },
+        { authMode: "userPool" }
+      );
+
+      if (errors) {
+        setError("Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+      setForm({ name: "", email: "", phone: "", eventDate: "", subject: "", message: "" });
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -55,6 +89,8 @@ export default function ContactPage() {
             </div>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit}>
+              {error && <div className={styles.error}>{error}</div>}
+
               <div className={styles.row}>
                 <div className={styles.field}>
                   <label htmlFor="name">Full Name *</label>
@@ -137,7 +173,9 @@ export default function ContactPage() {
                 />
               </div>
 
-              <button type="submit" className={styles.submitBtn}>Send Message</button>
+              <button type="submit" className={styles.submitBtn} disabled={submitting}>
+                {submitting ? "Sending..." : "Send Message"}
+              </button>
             </form>
           )}
         </div>
