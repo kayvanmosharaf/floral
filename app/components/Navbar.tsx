@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import styles from "./Navbar.module.css";
 import { useCart } from "../context/CartContext";
+import AuthModal from "./AuthModal";
 
 const links = [
   { href: "/", label: "Home" },
@@ -18,6 +19,7 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { count } = useCart();
   const { authStatus, signOut } = useAuthenticator();
 
@@ -39,16 +41,23 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
-        {authStatus === "authenticated" && (
-          <li>
+        <li>
+          {authStatus === "authenticated" ? (
             <button
               className={styles.signOutBtn}
               onClick={() => { signOut(); setMenuOpen(false); }}
             >
               Sign out
             </button>
-          </li>
-        )}
+          ) : (
+            <button
+              className={styles.signOutBtn}
+              onClick={() => { setShowAuthModal(true); setMenuOpen(false); }}
+            >
+              Sign in
+            </button>
+          )}
+        </li>
       </ul>
 
       <div className={styles.navRight}>
@@ -64,6 +73,7 @@ export default function Navbar() {
           {menuOpen ? "✕" : "☰"}
         </button>
       </div>
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </nav>
   );
 }
