@@ -20,6 +20,20 @@
   box-shadow: 0 24px 64px rgba(184, 92, 116, 0.18), 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* All text in the modal uses the brand pink */
+.modal :global(.amplify-label),
+.modal :global(.amplify-heading),
+.modal :global(.amplify-text),
+.modal :global(.amplify-tabs-item),
+.modal :global(.amplify-anchor),
+.modal :global(.amplify-field__error-message),
+.modal :global(.amplify-input),
+.modal :global(.amplify-select),
+.modal :global(.amplify-button--link),
+.modal :global(.amplify-button--small) {
+  color: #b85c74 !important;
+}
+
 /* Strip Amplify's own card border/shadow so our modal container is the card */
 .modal :global([data-amplify-router]) {
   border: none !important;
