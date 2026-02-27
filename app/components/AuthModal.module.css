@@ -42,6 +42,21 @@
   box-shadow: 0 0 0 3px #f0b8c8 !important;
 }
 
+/* Primary action buttons: Sign In, Create Account, Send Code */
+.modal :global(.amplify-button--primary) {
+  background-color: #b85c74 !important;
+  border-color: #b85c74 !important;
+}
+
+.modal :global(.amplify-button--primary:hover) {
+  background-color: #a04e65 !important;
+  border-color: #a04e65 !important;
+}
+
+.modal :global(.amplify-button--primary:focus) {
+  box-shadow: 0 0 0 3px #f0b8c8 !important;
+}
+
 /* Tab bar (Sign In / Create Account) */
 .modal :global(.amplify-tabs-item[data-state="active"]) {
   border-bottom-color: #b85c74 !important;
