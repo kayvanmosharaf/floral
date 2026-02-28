@@ -21,6 +21,7 @@ const schema = a.schema({
       eventDate: a.string(),
       subject: a.string().required(),
       message: a.string().required(),
+      attachmentKey: a.string(),
     })
     .authorization((allow) => [
       allow.owner(),
