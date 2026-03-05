@@ -5,16 +5,18 @@ import Link from "next/link";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useCart } from "../context/CartContext";
 import AuthModal from "../components/AuthModal";
+import CheckoutModal from "../components/CheckoutModal";
 import styles from "./cart.module.css";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, subtotal } = useCart();
   const { authStatus } = useAuthenticator();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   function handleCheckout() {
     if (authStatus === "authenticated") {
-      // TODO: proceed to checkout
+      setShowCheckout(true);
     } else {
       setShowAuthModal(true);
     }
@@ -97,6 +99,14 @@ export default function CartPage() {
       </div>
 
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+      {showCheckout && (
+        <CheckoutModal
+          onClose={() => setShowCheckout(false)}
+          items={items}
+          subtotal={subtotal}
+          clearCart={clearCart}
+        />
+      )}
     </div>
   );
 }

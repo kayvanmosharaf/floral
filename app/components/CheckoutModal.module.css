@@ -1,0 +1,340 @@
+/* Overlay & modal — mirrors AuthModal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2rem 1.75rem;
+  max-width: 520px;
+  width: 92%;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(184, 92, 116, 0.18), 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  z-index: 10;
+  background: #fdf5f7;
+  border: 1px solid #f0e6e6;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #b85c74;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.closeBtn:hover {
+  background: #f0e6e6;
+}
+
+/* ── Step indicator ── */
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #c0a8a8;
+  font-weight: 500;
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e0d0d0;
+  transition: background 0.2s;
+}
+
+.stepActive .stepDot {
+  background: #b85c74;
+}
+
+.stepActive {
+  color: #b85c74;
+  font-weight: 600;
+}
+
+.stepDone .stepDot {
+  background: #b85c74;
+}
+
+.stepDone {
+  color: #b85c74;
+}
+
+.stepSeparator {
+  width: 18px;
+  height: 1px;
+  background: #e0d0d0;
+  align-self: center;
+}
+
+/* ── Heading ── */
+.heading {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #b85c74;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Form fields ── */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.fieldRow > * {
+  flex: 1;
+}
+
+.field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #b85c74;
+  margin-bottom: 0.3rem;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e0d0d0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #fdfafa;
+  color: #4a3040;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #b85c74;
+  box-shadow: 0 0 0 3px #f0b8c8;
+}
+
+/* ── Card input group (Stripe-like) ── */
+.cardGroup {
+  border: 1px solid #e0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fdfafa;
+  margin-bottom: 1.5rem;
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+}
+
+.cardRow input {
+  border: none;
+  background: transparent;
+  padding: 0.7rem 0.75rem;
+  font-size: 0.9rem;
+  color: #4a3040;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+}
+
+.cardIcon {
+  padding-left: 0.75rem;
+  font-size: 1.1rem;
+  color: #b85c74;
+  flex-shrink: 0;
+}
+
+.cardNumberInput {
+  flex: 1;
+}
+
+.cardDivider {
+  height: 1px;
+  background: #e0d0d0;
+}
+
+.cardBottomRow {
+  display: flex;
+}
+
+.cardBottomRow input {
+  border: none;
+  background: transparent;
+  padding: 0.7rem 0.75rem;
+  font-size: 0.9rem;
+  color: #4a3040;
+  font-family: inherit;
+  outline: none;
+  flex: 1;
+}
+
+.cardBottomRow input:first-child {
+  border-right: 1px solid #e0d0d0;
+}
+
+.cardGroup:focus-within {
+  border-color: #b85c74;
+  box-shadow: 0 0 0 3px #f0b8c8;
+}
+
+/* ── Review / summary table ── */
+.summarySection {
+  margin-bottom: 1.25rem;
+}
+
+.summaryLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #b85c74;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.summaryValue {
+  font-size: 0.9rem;
+  color: #4a3040;
+  line-height: 1.5;
+}
+
+.summaryItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.summaryItemRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: #4a3040;
+}
+
+.summaryDivider {
+  border: none;
+  border-top: 1px solid #f0e6e6;
+  margin: 0.75rem 0;
+}
+
+.summaryTotalRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #b85c74;
+}
+
+/* ── Buttons ── */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.primaryBtn {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  background: #b85c74;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.primaryBtn:hover {
+  background: #a04e65;
+}
+
+.secondaryBtn {
+  padding: 0.7rem 1rem;
+  background: #fdf5f7;
+  color: #b85c74;
+  border: 1px solid #f0e6e6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.secondaryBtn:hover {
+  background: #f0e6e6;
+}
+
+/* ── Confirmation step ── */
+.confirmation {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.confirmIcon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.confirmHeading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #b85c74;
+  margin-bottom: 0.35rem;
+}
+
+.orderNumber {
+  font-size: 0.88rem;
+  color: #8a6a72;
+  margin-bottom: 1.5rem;
+}
+
+.confirmBtn {
+  padding: 0.7rem 2rem;
+  background: #b85c74;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.confirmBtn:hover {
+  background: #a04e65;
+}
