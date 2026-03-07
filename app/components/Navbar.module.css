@@ -68,6 +68,11 @@
   background-color: #fdf5f7;
 }
 
+.adminLink {
+  color: #b85c74;
+  font-weight: 600;
+}
+
 /* Sign out button — matches link style */
 .signOutBtn {
   display: block;

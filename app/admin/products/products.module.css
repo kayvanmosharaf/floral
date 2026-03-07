@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.addBtn {
+  padding: 0.5rem 1.2rem;
+  background: #b85c74;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addBtn:hover {
+  background: #a04d64;
+}
+
+.stockBadge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.inStock {
+  background: #d4edda;
+  color: #155724;
+}
+
+.outOfStock {
+  background: #f8d7da;
+  color: #721c24;
+}

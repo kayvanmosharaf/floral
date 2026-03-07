@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "@/amplify/data/resource";
 import type { CartProduct } from "../context/CartContext";
 import styles from "./CheckoutModal.module.css";
+
+const client = generateClient<Schema>();
 
 type CartItem = { product: CartProduct; quantity: number };
 
@@ -25,6 +29,7 @@ function generateOrderNumber() {
 export default function CheckoutModal({ onClose, items, subtotal, clearCart }: Props) {
   const [step, setStep] = useState(0);
   const [orderNumber, setOrderNumber] = useState("");
+  const [placing, setPlacing] = useState(false);
 
   // Shipping fields
   const [name, setName] = useState("");
@@ -42,11 +47,43 @@ export default function CheckoutModal({ onClose, items, subtotal, clearCart }: P
   const tax = parseFloat((subtotal * 0.08).toFixed(2));
   const total = subtotal + delivery + tax;
 
-  const maskedCard = cardNumber.length >= 4 ? `•••• ${cardNumber.slice(-4)}` : "•••• ••••";
+  const maskedCard = cardNumber.length >= 4 ? `---- ${cardNumber.slice(-4)}` : "---- ----";
 
-  function nextStep() {
+  async function nextStep() {
     if (step === 2) {
-      setOrderNumber(generateOrderNumber());
+      setPlacing(true);
+      try {
+        const num = generateOrderNumber();
+        await client.models.Order.create(
+          {
+            items: JSON.stringify(
+              items.map(({ product, quantity }) => ({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity,
+              }))
+            ),
+            shippingName: name,
+            shippingAddress: address,
+            shippingCity: city,
+            shippingState: state,
+            shippingZip: zip,
+            cardLast4: cardNumber.slice(-4),
+            subtotal,
+            delivery,
+            tax,
+            total,
+            orderNumber: num,
+          },
+          { authMode: "userPool" }
+        );
+        setOrderNumber(num);
+      } catch (err) {
+        console.error("Failed to place order:", err);
+      } finally {
+        setPlacing(false);
+      }
     }
     setStep((s) => s + 1);
   }
@@ -59,7 +96,7 @@ export default function CheckoutModal({ onClose, items, subtotal, clearCart }: P
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Close">✕</button>
+        <button className={styles.closeBtn} onClick={onClose} aria-label="Close">X</button>
 
         {/* Step indicator */}
         <div className={styles.steps}>
@@ -119,7 +156,7 @@ export default function CheckoutModal({ onClose, items, subtotal, clearCart }: P
               </label>
               <div className={styles.cardGroup}>
                 <div className={styles.cardRow}>
-                  <span className={styles.cardIcon}>💳</span>
+                  <span className={styles.cardIcon}>Card</span>
                   <input
                     className={styles.cardNumberInput}
                     value={cardNumber}
@@ -173,7 +210,7 @@ export default function CheckoutModal({ onClose, items, subtotal, clearCart }: P
               <div className={styles.summaryItems}>
                 {items.map(({ product, quantity }) => (
                   <div key={product.id} className={styles.summaryItemRow}>
-                    <span>{product.name} &times; {quantity}</span>
+                    <span>{product.name} x {quantity}</span>
                     <span>${(product.price * quantity).toFixed(2)}</span>
                   </div>
                 ))}
@@ -200,7 +237,9 @@ export default function CheckoutModal({ onClose, items, subtotal, clearCart }: P
 
             <div className={styles.actions}>
               <button className={styles.secondaryBtn} onClick={() => setStep(1)}>Back</button>
-              <button className={styles.primaryBtn} onClick={nextStep}>Place Order</button>
+              <button className={styles.primaryBtn} onClick={nextStep} disabled={placing}>
+                {placing ? "Placing Order..." : "Place Order"}
+              </button>
             </div>
           </>
         )}

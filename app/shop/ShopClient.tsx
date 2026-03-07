@@ -5,7 +5,7 @@ import styles from "./shop.module.css";
 import { useCart } from "../context/CartContext";
 
 type Product = {
-  id: number;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -71,7 +71,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
                     onClick={() => addToCart(product)}
                     disabled={inCart}
                   >
-                    {inCart ? "✓ Added" : "+ Add to Cart"}
+                    {inCart ? "Added" : "+ Add to Cart"}
                   </button>
                 </div>
               </div>

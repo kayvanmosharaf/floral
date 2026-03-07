@@ -31,43 +31,30 @@ function MessageThumbnail({ attachmentKey }: { attachmentKey: string }) {
   );
 }
 
-const FLOWER_IMAGES = [
-  "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1468327768560-75b778cbb551?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1562690868-60bbe7293e94?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1596438459194-f275f413d6ff?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1457089328109-e5d9bd499191?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=300&h=300&fit=crop",
-];
-
-const ORDER_STATUSES = ["Received", "Preparing", "Shipped", "Out for Delivery", "Arrived"] as const;
-type OrderStatus = typeof ORDER_STATUSES[number];
+const ORDER_STATUSES = ["pending", "preparing", "shipped", "delivered"] as const;
+type OrderStatus = string;
 
 interface OrderRecord {
   id: string;
-  subject: string;
+  orderNumber: string;
+  total: number;
+  status: string;
   createdAt: string;
-  status: OrderStatus;
-  imageUrl: string;
+  items: string;
 }
 
-function getRandomStatus(): OrderStatus {
-  return ORDER_STATUSES[Math.floor(Math.random() * ORDER_STATUSES.length)];
-}
-
-function OrderStatusTracker({ status }: { status: OrderStatus }) {
-  const currentIndex = ORDER_STATUSES.indexOf(status);
+function OrderStatusTracker({ status }: { status: string }) {
+  const statuses = ORDER_STATUSES;
+  const currentIndex = statuses.indexOf(status as typeof ORDER_STATUSES[number]);
   return (
     <div className={styles.statusTracker}>
-      {ORDER_STATUSES.map((step, i) => (
+      {statuses.map((step, i) => (
         <div key={step} className={styles.statusStep}>
           <div className={`${styles.statusDot} ${i <= currentIndex ? styles.statusDotActive : ""}`} />
-          <span className={`${styles.statusLabel} ${i <= currentIndex ? styles.statusLabelActive : ""}`}>{step}</span>
-          {i < ORDER_STATUSES.length - 1 && (
+          <span className={`${styles.statusLabel} ${i <= currentIndex ? styles.statusLabelActive : ""}`}>
+            {step.charAt(0).toUpperCase() + step.slice(1)}
+          </span>
+          {i < statuses.length - 1 && (
             <div className={`${styles.statusLine} ${i < currentIndex ? styles.statusLineActive : ""}`} />
           )}
         </div>
@@ -134,17 +121,19 @@ export default function ContactPage() {
     setLoadingOrders(true);
     setShowOrders(true);
     try {
-      const { data } = await client.models.ContactMessage.list({
+      const { data } = await client.models.Order.list({
         authMode: "userPool",
       });
-      const mockOrders: OrderRecord[] = (data as unknown as ContactMessageRecord[]).map((msg, i) => ({
-        id: `ORD-${String(i + 1).padStart(4, "0")}`,
-        subject: msg.subject,
-        createdAt: msg.createdAt ?? new Date().toISOString(),
-        status: getRandomStatus(),
-        imageUrl: FLOWER_IMAGES[Math.floor(Math.random() * FLOWER_IMAGES.length)],
-      }));
-      setOrders(mockOrders);
+      setOrders(
+        (data as unknown as OrderRecord[]).map((o) => ({
+          id: o.id,
+          orderNumber: o.orderNumber,
+          total: o.total,
+          status: o.status,
+          createdAt: o.createdAt,
+          items: o.items,
+        }))
+      );
     } catch {
       setOrders([]);
     } finally {
@@ -236,34 +225,38 @@ export default function ContactPage() {
                 <p style={{ color: "#888", textAlign: "center", padding: "2rem 0" }}>No orders yet.</p>
               ) : (
                 <div className={styles.messagesList}>
-                  {orders.map((order) => (
-                    <div key={order.id} className={styles.orderCard}>
-                      <div className={styles.orderCardContent}>
-                        <div className={styles.orderCardText}>
-                          <div className={styles.orderCardHeader}>
-                            <span className={styles.orderId}>{order.id}</span>
-                            <span className={`${styles.orderStatusBadge} ${styles[`status${order.status.replace(/\s+/g, "")}`]}`}>
-                              {order.status}
-                            </span>
+                  {orders.map((order) => {
+                    let itemsList: { name: string; quantity: number; price: number }[] = [];
+                    try { itemsList = JSON.parse(order.items); } catch { /* empty */ }
+                    return (
+                      <div key={order.id} className={styles.orderCard}>
+                        <div className={styles.orderCardContent}>
+                          <div className={styles.orderCardText}>
+                            <div className={styles.orderCardHeader}>
+                              <span className={styles.orderId}>{order.orderNumber}</span>
+                              <span className={styles.orderStatusBadge}>
+                                {order.status}
+                              </span>
+                            </div>
+                            <h3 className={styles.orderSubject}>
+                              {itemsList.map((it) => it.name).join(", ") || "Order"}
+                            </h3>
+                            <p className={styles.messageDate}>
+                              {new Date(order.createdAt).toLocaleDateString(undefined, {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </p>
+                            <p style={{ color: "#b85c74", fontWeight: 600 }}>
+                              ${order.total.toFixed(2)}
+                            </p>
                           </div>
-                          <h3 className={styles.orderSubject}>{order.subject}</h3>
-                          <p className={styles.messageDate}>
-                            {new Date(order.createdAt).toLocaleDateString(undefined, {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </p>
                         </div>
-                        <img
-                          src={order.imageUrl}
-                          alt="Order flower"
-                          className={styles.orderThumbnail}
-                        />
+                        <OrderStatusTracker status={order.status} />
                       </div>
-                      <OrderStatusTracker status={order.status} />
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -448,7 +441,7 @@ export default function ContactPage() {
             <h2 className={styles.infoTitle}>Contact Info</h2>
 
             <div className={styles.infoItem}>
-              <span className={styles.infoIcon}>📍</span>
+              <span className={styles.infoIcon}>Location</span>
               <div>
                 <p className={styles.infoLabel}>Address</p>
                 <p className={styles.infoValue}>123 Blossom Lane<br />San Francisco, CA 94102</p>
@@ -456,7 +449,7 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoItem}>
-              <span className={styles.infoIcon}>📞</span>
+              <span className={styles.infoIcon}>Phone</span>
               <div>
                 <p className={styles.infoLabel}>Phone</p>
                 <p className={styles.infoValue}>(415) 555-0192</p>
@@ -464,7 +457,7 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoItem}>
-              <span className={styles.infoIcon}>✉️</span>
+              <span className={styles.infoIcon}>Email</span>
               <div>
                 <p className={styles.infoLabel}>Email</p>
                 <p className={styles.infoValue}>hello@tuberosefloral.com</p>
@@ -472,12 +465,12 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoItem}>
-              <span className={styles.infoIcon}>🕐</span>
+              <span className={styles.infoIcon}>Hours</span>
               <div>
                 <p className={styles.infoLabel}>Hours</p>
                 <p className={styles.infoValue}>
-                  Mon – Fri: 9am – 6pm<br />
-                  Sat: 10am – 4pm<br />
+                  Mon - Fri: 9am - 6pm<br />
+                  Sat: 10am - 4pm<br />
                   Sun: Closed
                 </p>
               </div>
@@ -486,9 +479,9 @@ export default function ContactPage() {
             <div className={styles.social}>
               <p className={styles.infoLabel}>Follow Us</p>
               <div className={styles.socialLinks}>
-                <a href="#" aria-label="Instagram">📸 Instagram</a>
-                <a href="#" aria-label="Facebook">📘 Facebook</a>
-                <a href="#" aria-label="Pinterest">📌 Pinterest</a>
+                <a href="#" aria-label="Instagram">Instagram</a>
+                <a href="#" aria-label="Facebook">Facebook</a>
+                <a href="#" aria-label="Pinterest">Pinterest</a>
               </div>
             </div>
           </div>

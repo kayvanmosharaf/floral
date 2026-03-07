@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import styles from "./Navbar.module.css";
 import { useCart } from "../context/CartContext";
+import { useAdmin } from "../hooks/useAdmin";
 import AuthModal from "./AuthModal";
 
 const links = [
@@ -22,6 +23,7 @@ export default function Navbar() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { count } = useCart();
   const { authStatus, signOut } = useAuthenticator();
+  const { isAdmin } = useAdmin();
 
   return (
     <nav className={styles.navbar}>
@@ -41,6 +43,17 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+        {isAdmin && (
+          <li>
+            <Link
+              href="/admin"
+              className={`${styles.link} ${styles.adminLink} ${pathname.startsWith("/admin") ? styles.active : ""}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              Admin
+            </Link>
+          </li>
+        )}
         <li>
           {authStatus === "authenticated" ? (
             <button
