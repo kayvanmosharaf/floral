@@ -34,7 +34,7 @@ export default function HomePage() {
       <section className={styles.services}>
         <h2 className={styles.sectionTitle}>What We Offer</h2>
         <div className={styles.serviceGrid}>
-          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-k2rHVMAC7E4?w=600&q=80')" }}>
+          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&q=80')" }}>
             <div className={styles.serviceOverlay} />
             <div className={styles.serviceContent}>
               <h3>Bouquets</h3>
@@ -50,7 +50,7 @@ export default function HomePage() {
               <Link href="/contact" className={styles.cardLink}>Get a Quote →</Link>
             </div>
           </div>
-          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-swTMHPN2ij0?w=600&q=80')" }}>
+          <div className={styles.serviceCard} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80')" }}>
             <div className={styles.serviceOverlay} />
             <div className={styles.serviceContent}>
               <h3>Events</h3>
@@ -78,12 +78,12 @@ export default function HomePage() {
         <p className={styles.igHandle}>@tuberosefloral</p>
         <div className={styles.igGrid}>
           {[
-            "photo-1490750967868-88df5691b36d",
-            "photo-1558618666-fcd25c85cd64",
-            "photo-1520763185298-1b434c919102",
-            "photo-1444393350742-da1f11febe34",
-            "photo-1496661415325-ef852f9e8e7c",
-            "photo-1462275646964-a0e3386b89fa",
+            "photo-1487530811176-3780de880c2d",
+            "photo-1561181286-d3fee7d55364",
+            "photo-1455659817273-f96807779a8a",
+            "photo-1494336956603-39a3f0e3dcda",
+            "photo-1508610048659-a06b669e3321",
+            "photo-1526047932273-341f2a7631f9",
           ].map((id) => (
             <div
               key={id}
